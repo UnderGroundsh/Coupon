@@ -1,0 +1,45 @@
+customer name-ronen
+id-2
+buying pubg
+id 3 by company 2
+there are 2 copies of pubg
+after buy there is 1
+second buy 0-fault
+third buy -1-faultttt
+
+
+test 2.0
+customer name-ronen
+id-2
+buying pubg
+id 3 by company 4
+1)exception on coupon-set id not on
+2)null pointer-no get all coupons on customerDBDAO
+3)get all coupons fixed
+
+test 3.0
+customer name-ronen
+id-2
+buying pubg
+id 3 by company 4
+1)success-cus_cou updated+coupon amount now 1
+join table shows he got it
+2)should fail-but didnt
+3)failed cause of 0 amount
+
+
+
+
+
+
+exceptions:
+customerDBDAO
+{
+create-done
+get all-?
+get 1-?
+update-done
+
+
+
+

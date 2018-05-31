@@ -1,0 +1,56 @@
+public void removeCompany(Company company) throws CompanyRemovalException{
+		Connection conn = connPool.getConnection();
+		try {			
+			// first we got the list of couponIds of this company
+			String query = "SELECT COUPON_ID FROM Company_Coupon WHERE COMP_ID=?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setLong(1, company.getId());
+			ResultSet rs = pstmt.executeQuery();
+			List<Long> couponIds = new ArrayList<Long>();
+			while (rs.next()) {
+				Long couponId = rs.getLong("COUPON_ID");
+				couponIds.add(rs.getLong("COUPON_ID"));
+			}
+
+			// if list not empty ( at lease 1 coupon. continue )
+			if (couponIds.size() > 0) {
+				StringBuilder sb = new StringBuilder("(");
+				for (int i = 0; i < couponIds.size(); i++) {
+					sb.append(couponIds.get(i)+ (i == couponIds.size() - 1 ? ")" : ", "));
+				}
+				
+				// deleting all coupons of that company, that were already purchased by customers
+				query = "DELETE FROM Customer_Coupon WHERE COUPON_ID IN " + sb.toString() + ";";
+				pstmt = conn.prepareStatement(query);
+				int rowsDeletedFromCustomer_Coupon = pstmt.executeUpdate();
+				Utils.logMessage(this, Severity.DEBUG,rowsDeletedFromCustomer_Coupon + " rows deleted from table : Customer_Coupon.");
+				
+				// delete coupons of this company from company_coupon
+				query = "DELETE FROM Company_Coupon WHERE COMP_ID=?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setLong(1, company.getId());
+				int rowsDeletedFromCompany_Coupon = pstmt.executeUpdate();
+				Utils.logMessage(this, Severity.DEBUG,rowsDeletedFromCompany_Coupon + " rows deleted from table : Company_Coupon.");
+
+				// delete the coupon itself from the Coupons table
+				query = "DELETE FROM Coupons WHERE COMPANY_ID=?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setLong(1, company.getId());
+				int rowsDeletedFromCoupon = pstmt.executeUpdate();
+				Utils.logMessage(this, Severity.DEBUG,rowsDeletedFromCoupon + " rows deleted from table : Coupons.");
+			}
+			// finally delete from companies table
+			query = "DELETE FROM Companies WHERE ID =?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setLong(1, company.getId());
+			int rowsrecordsDeletedFromCompany = pstmt.executeUpdate();
+			Utils.logMessage(this, Severity.DEBUG,rowsrecordsDeletedFromCompany + " rows deleted from table : Companies.");
+			
+			pstmt.close();
+			Utils.logMessage(this, Severity.INFO, "company removed : " + company.getCompName() + ", and ALL it coupons and relations");
+		} catch (SQLException e) {
+			Utils.logMessage(this, Severity.ERROR, "cannot remove company : " + company.getCompName() + " : "+ e.getMessage());
+			throw new CompanyRemovalException(company);
+		}
+		finally {connPool.returnConnection(conn);}
+	}
