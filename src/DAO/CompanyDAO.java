@@ -14,7 +14,7 @@ import java.util.Collection;
 
 public interface CompanyDAO {
     void createCompany(Company company) throws CompanyCreationException, InterruptedThreadException;
-    void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException;
+    void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException, DBErrorException;
     void updateCompany(Company company) throws CompanyUpdateException, InterruptedThreadException;
     Company getCompany(long id) throws DBErrorException, InterruptedThreadException;
     Collection<Company> getCompanies() throws DBErrorException, InterruptedThreadException;

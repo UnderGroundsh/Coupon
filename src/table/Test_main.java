@@ -28,30 +28,54 @@ import bean.Customer;
 import exceptions.BadLoginException;
 import exceptions.CompanyCreationException;
 import exceptions.CompanyRemovalException;
+import exceptions.CouponCreationException;
 import exceptions.CouponNotAvailableException;
+import exceptions.CouponRemovalException;
 import exceptions.CouponUpdateException;
+import exceptions.CustomerCreationException;
 import exceptions.DBErrorException;
 import exceptions.InterruptedThreadException;
 
 public class Test_main {
 	@SuppressWarnings("deprecation")
-	public static void main(String[]args) throws CouponNotAvailableException, CouponUpdateException, DBErrorException, InterruptedThreadException, BadLoginException, CompanyCreationException, CompanyRemovalException {
+	public static void main(String[]args) throws CouponNotAvailableException, CouponUpdateException, DBErrorException, InterruptedThreadException, BadLoginException, CompanyCreationException, CompanyRemovalException, CustomerCreationException, CouponCreationException, CouponRemovalException {
 		CouponSystem couponSystem = CouponSystem.getInstance();
-//	CouponClientFacade a = couponSystem.login("ronen", "PUBGNoob", ClientType.CUSTOMER);
+	//CouponClientFacade a = couponSystem.login("sean", "420", ClientType.CUSTOMER);
 //		System.out.println(a);
-//		Coupon cop=new Coupon();
-//		cop.setId(3);
-//		cop.setTitle("pubg");
-//		System.out.println(cop.getAmount());
-		//((CustomerFacade)a).purchaseCoupon(cop);
-		CouponClientFacade a = couponSystem.login("admin", "1234", ClientType.ADMIN);
+		
+	CouponClientFacade a = couponSystem.login("sean", "420", ClientType.CUSTOMER);
 		Company company=new Company();
-		company.setEmail("asdasdaff@asd");
-		company.setId(10);
-		company.setName("test");
-		company.setPassword("1234");
-		((AdminFacade)a).createCompany(company);//create company-work
+//		company.setEmail("google@gmail.com");
+//		company.setId(3);
+//		company.setName("Google");
+//		company.setPassword("1234");
+		//((AdminFacade)a).createCompany(company);//create company-work
 		//((AdminFacade)a).removeCompany(company);
+		Customer cust=new Customer();
+		cust.setId(3);
+		cust.setCustomerName("sean");
+		cust.setPassword("420");
+		
+		System.out.println(cust.getCoupons());
+//		cust.setCustomerName("ben");
+//		cust.setPassword("silan");
+		//((AdminFacade)a).removeCompany(company);
+		
+		Coupon cop=new Coupon();
+//		cop.setAmount(10);
+		cop.setId(3);
+//		cop.setEndDate(new Date(117, 12, 12));
+//		cop.setImage("image");
+//		cop.setMessage("i am the mamba");
+//		cop.setPrice(50.0);
+//		cop.setStartDate(new Date(117, 5, 5));
+//		cop.setTitle("Mamba");
+//	cop.setType(CouponType.ELECTRICITY);
+//		cop.setByCompanyId(company.getId());
+		//((CustomerFacade)a).purchaseCoupon(cop);
+		//((CompanyFacade)a).removeCoupon(cop);
+		//((CustomerFacade)a).
+		
 		
 		
 		

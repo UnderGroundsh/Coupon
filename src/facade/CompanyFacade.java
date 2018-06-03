@@ -60,6 +60,7 @@ public class CompanyFacade implements CouponClientFacade {
 
 	public void createCoupon(Coupon coupon) throws CouponCreationException, InterruptedThreadException {
 		couponDao.createCoupon(coupon);
+		
 	}
 
 	public void removeCoupon(Coupon coupon) throws CouponRemovalException , InterruptedThreadException{
@@ -67,6 +68,7 @@ public class CompanyFacade implements CouponClientFacade {
 	}
 
 	public void updateCoupon(Coupon coupon) throws CouponUpdateException, InterruptedThreadException{
+		
 		couponDao.updateCoupon(coupon);
 	}
 

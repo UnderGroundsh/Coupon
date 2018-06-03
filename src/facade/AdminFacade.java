@@ -49,13 +49,10 @@ public class AdminFacade implements CouponClientFacade {
 	//
 	public void createCompany(Company company) throws CompanyCreationException, InterruptedThreadException, DBErrorException  {
 		
-		if(getAllCompanies().contains(company))		
-		throw new CompanyCreationException(company);
-		
 		companyDao.createCompany(company);
 		
 	}
-	public void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException {
+	public void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException, DBErrorException {
 		companyDao.removeCompany(company);
 		
 	}

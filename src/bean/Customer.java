@@ -2,6 +2,14 @@ package bean;
 
 import java.util.Collection;
 
+import exceptions.BadLoginException;
+import exceptions.DBErrorException;
+import exceptions.InterruptedThreadException;
+import facade.ClientType;
+import facade.CompanyFacade;
+import facade.CustomerFacade;
+import systems.CouponSystem;
+
 
 public class Customer {
     private long id;
@@ -33,13 +41,12 @@ public class Customer {
         this.password = password;
     }
 
-    public Collection<Coupon> getCoupons() {
-        return coupons;
+    public Collection<Coupon> getCoupons() throws DBErrorException, InterruptedThreadException, BadLoginException {
+        CustomerFacade c = (CustomerFacade)CouponSystem.getInstance().login(this.customerName, this.password, ClientType.CUSTOMER);
+        return c.getAllPurchasedCoupons();
     }
 
-    public void setCoupons(Collection<Coupon> coupons) {
-        this.coupons = coupons;
-    }
+ 
 
     @Override
     public String toString() {

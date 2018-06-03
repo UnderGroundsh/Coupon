@@ -30,8 +30,8 @@ public class CouponDBDAO implements CouponDaoInterface{
             preparedStatement.setDate(2, coupon.getStartDate());
             preparedStatement.setDate(3, coupon.getEndDate());
             preparedStatement.setInt(4, coupon.getAmount());
-            preparedStatement.setString(5, coupon.getType().toString());
-            preparedStatement.setString(6, coupon.getMessage());
+            preparedStatement.setString(5, coupon.getMessage());
+            preparedStatement.setString(6, coupon.getType().toString());
             preparedStatement.setDouble(7, coupon.getPrice());
             preparedStatement.setString(8, coupon.getImage());
             preparedStatement.setLong(9, coupon.getByCompanyId());
@@ -39,6 +39,7 @@ public class CouponDBDAO implements CouponDaoInterface{
             connection.commit();
 		}catch(SQLException e){
 		throw new CouponCreationException(coupon);
+		
 	}finally {
 		if(connection!=null)
 		ConnectionPool.getInstance().returnConnection(connection);			
@@ -166,7 +167,11 @@ public class CouponDBDAO implements CouponDaoInterface{
      PreparedStatement preparedStatement = null;
      try {
     	 connection = ConnectionPool.getInstance().getConnection();
-    	 String sqlQuery = " DELETE FROM APP.COUPON WHERE ID = ?";
+    	 String sqlQuery = " DELETE FROM APP.CUSTOMER_COUPON WHERE COUPON_ID = ?";
+    	 preparedStatement = connection.prepareStatement(sqlQuery);
+    	 preparedStatement.setLong(1, coupon.getId());
+    	 preparedStatement.executeUpdate();
+         sqlQuery = " DELETE FROM APP.COUPON WHERE ID = ?";
     	 preparedStatement = connection.prepareStatement(sqlQuery);
     	 preparedStatement.setLong(1, coupon.getId());
     	 preparedStatement.executeUpdate();

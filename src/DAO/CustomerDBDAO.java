@@ -181,10 +181,11 @@ public class CustomerDBDAO implements CustomerDaoInterface {
 	public void addCouponToCustomer(Coupon coupon, Customer customer) throws DBErrorException, InterruptedThreadException {
 		Connection connection = ConnectionPool.getInstance().getConnection();
 		try {
-			String query = "INSERT INTO APP.CUSTOMER_COUPON (CUSTOMER_ID, COUPON_ID) VALUES (?, ?)";
+			String query = "INSERT INTO APP.CUSTOMER_COUPON (CUSTOMER_ID, COUPON_ID,COMPANY_ID) VALUES (?, ?, ?)";
 			PreparedStatement pstmt = connection.prepareStatement(query);
 			pstmt.setLong(1, customer.getId());
 			pstmt.setLong(2, coupon.getId());
+			pstmt.setLong(3, coupon.getByCompanyId());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {

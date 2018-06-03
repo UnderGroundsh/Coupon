@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import exceptions.*;
 import connection.ConnectionPool;
 import bean.Company;
@@ -65,19 +67,23 @@ public class CompanyDBDAO implements CompanyDAO {
 	}
 
 	// will delete company from the system
-	public void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException {
+	public void removeCompany(Company company) throws CompanyRemovalException, InterruptedThreadException, DBErrorException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		List<Long> coupon_ids = new ArrayList<Long>();
 		try {	 		
 			connection = ConnectionPool.getInstance().getConnection();
 			String sqlQuery = " DELETE FROM APP.COUPON WHERE COMPANY_ID=?";
 			preparedStatement = connection.prepareStatement(sqlQuery);
 			preparedStatement.setLong(1, company.getId());
 			preparedStatement.executeUpdate();
+			sqlQuery = " DELETE FROM APP.CUSTOMER_COUPON WHERE COMPANY_ID=?";
+			preparedStatement = connection.prepareStatement(sqlQuery);
+			preparedStatement.setLong(1, company.getId());
+			preparedStatement.executeUpdate();
 			sqlQuery = " DELETE FROM APP.COMPANY WHERE ID=?";
 			preparedStatement = connection.prepareStatement(sqlQuery);
 			preparedStatement.setLong(1, company.getId());
+			preparedStatement.executeUpdate();
 			
 
 		} catch (SQLException e) {

@@ -1,6 +1,12 @@
 package bean;
 
+import systems.*;
 import java.util.Collection;
+
+import exceptions.BadLoginException;
+import exceptions.DBErrorException;
+import exceptions.InterruptedThreadException;
+import facade.*;
 
 
 public class Company {
@@ -45,15 +51,13 @@ public class Company {
         this.email = email;
     }
 
-    public Collection<Coupon> getCoupons() {
-        return coupons;
+    public Collection<Coupon> getCoupons() throws DBErrorException, InterruptedThreadException, BadLoginException {
+        CompanyFacade c = (CompanyFacade)CouponSystem.getInstance().login(this.name, this.password, ClientType.COMPANY);
+        return c.getAllCoupons(id); 
     }
-	@Override
-	public boolean equals(Object c) {
-		Company comp = (Company)c;
-		System.out.println(comp.getName().equals(this.getName()));
-		return comp.getName().equals(this.getName());
-	}
+    
+	
+
 
     @Override
     public String toString() {
